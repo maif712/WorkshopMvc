@@ -1,0 +1,87 @@
+﻿@model IEnumerable<WorkshopMvc.Models.Workshop>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@if (TempData["success"] != null)
+{
+    <p class="success-message">@TempData["success"]</p>
+}
+
+<h1>Workshop Index</h1>
+
+<p>
+    <a asp-action="Create">Create New Workshop</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Participants) - Status
+            </th>
+            <th>
+                Workshop Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @if (item.Participants.Any())
+                    {
+                        <ul class="tbl-participant-wrapper">
+                            @foreach (var participant in item.Participants)
+                            {
+                                <li>
+                                    @participant.Name - @participant.Status
+                                    <div class="tbl-action-btns-wrapper">
+                                        <a class="btn btn-outline-primary" asp-controller="Participant" asp-action="Edit" asp-route-id="@participant.Id">Edit</a>
+                                        <form asp-controller="Participant" asp-action="Delete" method="post" asp-route-id="@participant.Id">
+                                            <button type="submit" class="btn btn-outline-danger">Del</button>
+                                        </form>
+                                    </div>
+                                    @if (participant.Status == "pending")
+                                    {
+                                        <form method="post" asp-controller="Participant" asp-action="Confirmed" asp-route-id="@participant.Id">
+                                            <button class="btn btn-primary" type="submit">Confirm</button>
+                                        </form>
+                                    }
+                                </li>
+
+
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>No participant</p>
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-success mb-2" asp-controller="Participant" asp-action="Create" asp-route-workshopId="@item.Id">Add participant</a>
+                    <div class="tbl-action-btns-wrapper">
+                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="post">
+                            <button type="submit" class="btn btn-danger">Del</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

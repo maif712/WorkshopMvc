@@ -1,0 +1,27 @@
+﻿@model List<Workshop>
+
+<div class="workshop-wrapper">
+    @foreach (var workshop in Model)
+    {
+
+        <div class="workshop-card">
+            <h2 class="workshop-title">@workshop.Title (@workshop.Date.ToShortDateString())</h2>
+            <div class="p-3">
+                <p>Total participant(s): <span class="total-paticipants">@workshop.Participants.Count()</span></p>
+                @if (workshop.Participants.Any())
+                {
+                    <ul class="participant-wrapper">
+                        @foreach (var participant in workshop.Participants)
+                        {
+                            <li class="participant-name">@participant.Name - <span class="participant-status @(participant.Status == "confirmed" ? "confirmed" : "pending")">@participant.Status</span></li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>No participant</p>
+                }
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,21 @@
+﻿@model Participant
+
+<h2>Add Participant</h2>
+
+<form method="post" asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="WorkshopId" value="@ViewBag.WorkshopId" />
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Status:</label>
+        <select asp-for="Status">
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+        </select>
+    </div>
+    <button type="submit">Save</button>
+</form>
